@@ -2158,6 +2158,11 @@ struct SIToFPLowering
   using Super::Super;
 };
 
+struct UIToFPLowering
+    : public OneToOneLLVMOpLowering<UIToFPOp, LLVM::UIToFPOp> {
+  using Super::Super;
+};
+
 struct FPExtLowering : public OneToOneLLVMOpLowering<FPExtOp, LLVM::FPExtOp> {
   using Super::Super;
 };
@@ -2868,6 +2873,7 @@ void mlir::populateStdToLLVMNonMemoryConversionPatterns(
       ReturnOpLowering,
       RsqrtOpLowering,
       SIToFPLowering,
+      UIToFPLowering,
       SelectOpLowering,
       ShiftLeftOpLowering,
       SignExtendIOpLowering,

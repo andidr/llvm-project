@@ -473,6 +473,34 @@ func @sitofp(%arg0 : i32, %arg1 : i64) {
   return
 }
 
+// Checking conversion of signless integer types to floating point.
+// CHECK-LABEL: @uitofp_signless
+func @uitofp_signless(%arg0 : i32, %arg1 : i64) {
+// CHECK-NEXT: = llvm.uitofp {{.*}} : !llvm.i{{.*}} to !llvm.float
+  %0 = uitofp %arg0: i32 to f32
+// CHECK-NEXT: = llvm.uitofp {{.*}} : !llvm.i{{.*}} to !llvm.double
+  %1 = uitofp %arg0: i32 to f64
+// CHECK-NEXT: = llvm.uitofp {{.*}} : !llvm.i{{.*}} to !llvm.float
+  %2 = uitofp %arg1: i64 to f32
+// CHECK-NEXT: = llvm.uitofp {{.*}} : !llvm.i{{.*}} to !llvm.double
+  %3 = uitofp %arg1: i64 to f64
+  return
+}
+
+// Checking conversion of unsigned integer types to floating point.
+// CHECK-LABEL: @uitofp_unsigned
+func @uitofp_unsigned(%arg0 : ui32, %arg1 : ui64) {
+// CHECK-NEXT: = llvm.uitofp {{.*}} : !llvm.i{{.*}} to !llvm.float
+  %0 = uitofp %arg0: ui32 to f32
+// CHECK-NEXT: = llvm.uitofp {{.*}} : !llvm.i{{.*}} to !llvm.double
+  %1 = uitofp %arg0: ui32 to f64
+// CHECK-NEXT: = llvm.uitofp {{.*}} : !llvm.i{{.*}} to !llvm.float
+  %2 = uitofp %arg1: ui64 to f32
+// CHECK-NEXT: = llvm.uitofp {{.*}} : !llvm.i{{.*}} to !llvm.double
+  %3 = uitofp %arg1: ui64 to f64
+  return
+}
+
 // Checking conversion of integer types to floating point.
 // CHECK-LABEL: @fpext
 func @fpext(%arg0 : f16, %arg1 : f32) {

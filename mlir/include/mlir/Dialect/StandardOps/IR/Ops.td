@@ -1490,6 +1490,28 @@ def SIToFPOp : CastOp<"sitofp">, Arguments<(ins AnyType:$in)> {
 }
 
 //===----------------------------------------------------------------------===//
+// UIToFPOp
+//===----------------------------------------------------------------------===//
+
+def UIToFPOp : CastOp<"uitofp">, Arguments<(ins AnyType:$in)> {
+  let summary = "cast from unsigned integer type to floating-point";
+  let description = [{
+    Cast from a value interpreted as unsigned integer to the corresponding
+    floating-point value. If the value cannot be exactly represented, it is
+    rounded using the default rounding mode. Only scalars are currently
+    supported.
+  }];
+
+  let extraClassDeclaration = [{
+    /// Return true if `a` and `b` are valid operand and result pairs for
+    /// the operation.
+    static bool areCastCompatible(Type a, Type b);
+  }];
+
+  let hasFolder = 0;
+}
+
+//===----------------------------------------------------------------------===//
 // SplatOp
 //===----------------------------------------------------------------------===//
 

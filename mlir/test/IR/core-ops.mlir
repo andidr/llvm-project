@@ -527,6 +527,18 @@ func @standard_instrs(tensor<4x4x?xf32>, f32, i32, index, i64, f16, si32, ui32) 
   // CHECK: %{{[0-9]+}} = addi %{{[0-9]+}}, %{{[0-9]+}} : ui32
   %149 = addi %148, %148 : ui32
 
+  // CHECK: = uitofp {{.*}} : i32 to f32
+  %150 = uitofp %i : i32 to f32
+
+  // CHECK: = uitofp {{.*}} : i32 to f64
+  %151 = uitofp %i : i32 to f64
+
+  // CHECK: = uitofp {{.*}} : i64 to f32
+  %152 = uitofp %j : i64 to f32
+
+  // CHECK: = uitofp {{.*}} : i64 to f64
+  %153 = uitofp %j : i64 to f64
+
   return
 }
 
@@ -774,5 +786,17 @@ func @atomic_rmw(%I: memref<10xf32>, %val: f32, %i : index) {
 func @assume_alignment(%0: memref<4x4xf16>) {
   // CHECK: assume_alignment %[[MEMREF]], 16 : memref<4x4xf16>
   assume_alignment %0, 16 : memref<4x4xf16>
+  return
+}
+
+
+// CHECK-LABEL: func @uitofp
+func @uitofp(%i: i32, %u: ui32) {
+  // CHECK: = uitofp {{.*}} : i32 to f32
+  uitofp %i : i32 to f32
+
+  // CHECK: = uitofp {{.*}} : ui32 to f32
+  uitofp %u : ui32 to f32
+
   return
 }
