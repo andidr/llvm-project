@@ -885,13 +885,25 @@ func @index_cast(%arg0: i16) -> (i16) {
 }
 
 // CHECK-LABEL: func @index_cast_fold
-func @index_cast_fold() -> (i16, index) {
+func @index_cast_fold() -> (i16, index, ui16, index, si16, index) {
   %c4 = constant 4 : index
+
   %1 = index_cast %c4 : index to i16
   %c4_i16 = constant 4 : i16
   %2 = index_cast %c4_i16 : i16 to index
+
+  %u1 = index_cast %c4 : index to ui16
+  %c4_ui16 = constant 4 : ui16
+  %u2 = index_cast %c4_ui16 : ui16 to index
+
+  %s1 = index_cast %c4 : index to si16
+  %c4_si16 = constant 4 : si16
+  %s2 = index_cast %c4_si16 : si16 to index
+
   // CHECK: %[[C4_I16:.*]] = constant 4 : i16
+  // CHECK: %[[C4_UI16:.*]] = constant 4 : ui16
+  // CHECK: %[[C4_SI16:.*]] = constant 4 : si16
   // CHECK: %[[C4:.*]] = constant 4 : index
-  // CHECK: return %[[C4_I16]], %[[C4]] : i16, index
-  return %1, %2 : i16, index
+  // CHECK: return %[[C4_I16]], %[[C4]], %[[C4_UI16]], %[[C4]], %[[C4_SI16]], %[[C4]] : i16, index, ui16, index, si16, index
+  return %1, %2, %u1, %u2, %s1, %s2 : i16, index, ui16, index, si16, index
 }

@@ -1362,8 +1362,11 @@ bool FPTruncOp::areCastCompatible(Type a, Type b) {
 
 // Index cast is applicable from index to integer and backwards.
 bool IndexCastOp::areCastCompatible(Type a, Type b) {
-  return (a.isIndex() && b.isSignlessInteger()) ||
-         (a.isSignlessInteger() && b.isIndex());
+  return (a.isIndex() && (b.isSignlessInteger() || b.isSignedInteger() ||
+                          b.isUnsignedInteger())) ||
+         ((a.isSignlessInteger() || a.isSignedInteger() ||
+           a.isUnsignedInteger()) &&
+          b.isIndex());
 }
 
 OpFoldResult IndexCastOp::fold(ArrayRef<Attribute> cstOperands) {
@@ -1375,8 +1378,14 @@ OpFoldResult IndexCastOp::fold(ArrayRef<Attribute> cstOperands) {
   // Fold IndexCast(constant) -> constant
   // A little hack because we go through int.  Otherwise, the size
   // of the constant might need to change.
-  if (auto value = cstOperands[0].dyn_cast_or_null<IntegerAttr>())
-    return IntegerAttr::get(getType(), value.getInt());
+  if (auto value = cstOperands[0].dyn_cast_or_null<IntegerAttr>()) {
+    if (value.getType().isSignedInteger())
+      return IntegerAttr::get(getType(), value.getSInt());
+    else if (value.getType().isUnsignedInteger())
+      return IntegerAttr::get(getType(), value.getUInt());
+    else
+      return IntegerAttr::get(getType(), value.getInt());
+  }
 
   return {};
 }
