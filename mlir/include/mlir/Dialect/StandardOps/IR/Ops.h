@@ -75,6 +75,11 @@ public:
   static void build(Builder *builder, OperationState &result, int64_t value,
                     unsigned width);
 
+  /// Build a constant int op producing a signed / unsigned integer of
+  /// the specified width.
+  static void build(Builder *builder, OperationState &result,
+                    const APInt &value, unsigned width, bool sign);
+
   /// Build a constant int op producing an integer with the specified type,
   /// which must be an integer type.
   static void build(Builder *builder, OperationState &result, int64_t value,

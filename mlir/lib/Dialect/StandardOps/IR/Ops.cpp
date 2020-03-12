@@ -927,6 +927,13 @@ void ConstantIntOp::build(Builder *builder, OperationState &result,
                     builder->getIntegerAttr(type, value));
 }
 
+void ConstantIntOp::build(Builder *builder, OperationState &result,
+                          const APInt &value, unsigned width, bool sign) {
+  Type type = builder->getIntegerType(width, sign);
+  ConstantOp::build(builder, result, type,
+                    builder->getIntegerAttr(type, value));
+}
+
 /// Build a constant int op producing an integer with the specified type,
 /// which must be an integer type.
 void ConstantIntOp::build(Builder *builder, OperationState &result,
