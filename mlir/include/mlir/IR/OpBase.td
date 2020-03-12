@@ -678,6 +678,14 @@ def BoolLike : TypeConstraint<Or<[I1.predicate, VectorOf<[I1]>.predicate,
                                   TensorOf<[I1]>.predicate]>,
     "bool-like">;
 
+// Type constraint for integer-like types: integers, indices, vectors of
+// integers, tensors of integers.
+def IntegerLike : TypeConstraint<Or<[
+        AnyInteger.predicate, Index.predicate,
+        VectorOf<[AnyInteger]>.predicate,
+        TensorOf<[AnyInteger]>.predicate]>,
+    "integer-like">;
+
 // Type constraint for signless-integer-like types: signless integers, indices,
 // vectors of signless integers, tensors of signless integers.
 def SignlessIntegerLike : TypeConstraint<Or<[

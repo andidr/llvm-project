@@ -186,7 +186,7 @@ func @func_with_ops(f32) {
 
 func @func_with_ops(f32) {
 ^bb0(%a : f32):
-  // expected-error@+1 {{'std.addi' op operand #0 must be signless-integer-like}}
+  // expected-error@+1 {{'std.addi' op operand #0 must be integer-like}}
   %sf = addi %a, %a : f32
 }
 

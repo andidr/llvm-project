@@ -109,7 +109,7 @@ class ArithmeticOp<string mnemonic, list<OpTrait> traits = []> :
 //     <op>i %0, %1 : i32
 class IntArithmeticOp<string mnemonic, list<OpTrait> traits = []> :
     ArithmeticOp<mnemonic, traits>,
-    Arguments<(ins SignlessIntegerLike:$lhs, SignlessIntegerLike:$rhs)>;
+    Arguments<(ins IntegerLike:$lhs, IntegerLike:$rhs)>;
 
 // Base class for standard arithmetic binary operations on floats, vectors and
 // tensors thereof.  This operation has two operands and returns one result,

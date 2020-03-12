@@ -41,9 +41,9 @@ func @func_with_ops(f32) {
   return
 }
 
-// CHECK-LABEL: func @standard_instrs(%arg0: tensor<4x4x?xf32>, %arg1: f32, %arg2: i32, %arg3: index, %arg4: i64, %arg5: f16) {
-func @standard_instrs(tensor<4x4x?xf32>, f32, i32, index, i64, f16) {
-^bb42(%t: tensor<4x4x?xf32>, %f: f32, %i: i32, %idx : index, %j: i64, %half: f16):
+// CHECK-LABEL: func @standard_instrs(%arg0: tensor<4x4x?xf32>, %arg1: f32, %arg2: i32, %arg3: index, %arg4: i64, %arg5: f16, %arg6: si32, %arg7: ui32) {
+func @standard_instrs(tensor<4x4x?xf32>, f32, i32, index, i64, f16, si32, ui32) {
+^bb42(%t: tensor<4x4x?xf32>, %f: f32, %i: i32, %idx : index, %j: i64, %half: f16, %si: si32, %ui: ui32):
   // CHECK: %0 = dim %arg0, 2 : tensor<4x4x?xf32>
   %a = "std.dim"(%t){index = 2} : (tensor<4x4x?xf32>) -> index
 
@@ -514,6 +514,18 @@ func @standard_instrs(tensor<4x4x?xf32>, f32, i32, index, i64, f16) {
 
   // CHECK: %{{[0-9]+}} = rsqrt %arg1 : f32
   %145 = rsqrt %f : f32
+
+  // CHECK: %{{[0-9]+}} = addi %arg6, %arg6 : si32
+  %146 = "std.addi"(%si, %si) : (si32,si32) -> si32
+
+  // CHECK: %{{[0-9]+}} = addi %{{[0-9]+}}, %{{[0-9]+}} : si32
+  %147 = addi %146, %146 : si32
+
+  // CHECK: %{{[0-9]+}} = addi %arg7, %arg7 : ui32
+  %148 = "std.addi"(%ui, %ui) : (ui32,ui32) -> ui32
+
+  // CHECK: %{{[0-9]+}} = addi %{{[0-9]+}}, %{{[0-9]+}} : ui32
+  %149 = addi %148, %148 : ui32
 
   return
 }
