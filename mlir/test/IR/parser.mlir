@@ -492,11 +492,16 @@ func @condbr_moarargs() -> (i32) {
 
 // Test pretty printing of constant names.
 // CHECK-LABEL: func @constants
-func @constants() -> (i32, i23, i23, i1, i1) {
+func @constants() -> (i32, i23, ui32, ui23, i23, i1, i1) {
   // CHECK: %{{.*}} = constant 42 : i32
   %x = constant 42 : i32
   // CHECK: %{{.*}} = constant 17 : i23
   %y = constant 17 : i23
+
+  // CHECK: %{{.*}} = constant 42 : ui32
+  %ux = constant 42 : ui32
+  // CHECK: %{{.*}} = constant 17 : ui23
+  %uy = constant 17 : ui23
 
   // This is a redundant definition of 17, the asmprinter gives it a unique name
   // CHECK: %{{.*}} = constant 17 : i23
@@ -513,7 +518,7 @@ func @constants() -> (i32, i23, i23, i1, i1) {
   %h = constant 0xf32 : i32
 
   // CHECK: return %{{.*}}, %{{.*}}, %{{.*}}, %{{.*}}, %{{.*}}
-  return %x, %y, %z, %t, %f : i32, i23, i23, i1, i1
+  return %x, %y, %ux, %uy, %z, %t, %f : i32, i23, ui32, ui23, i23, i1, i1
 }
 
 // CHECK-LABEL: func @typeattr

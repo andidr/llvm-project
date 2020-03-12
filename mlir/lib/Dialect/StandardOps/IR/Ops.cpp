@@ -878,7 +878,7 @@ void ConstantOp::getAsmResultNames(
     // Otherwise, build a complex name with the value and type.
     SmallString<32> specialNameBuffer;
     llvm::raw_svector_ostream specialName(specialNameBuffer);
-    specialName << 'c' << intCst.getInt();
+    specialName << 'c' << intCst.getValue();
     if (intTy)
       specialName << '_' << type;
     setNameFn(getResult(), specialName.str());
@@ -917,7 +917,7 @@ bool ConstantFloatOp::classof(Operation *op) {
 /// ConstantIntOp only matches values whose result type is an IntegerType.
 bool ConstantIntOp::classof(Operation *op) {
   return ConstantOp::classof(op) &&
-         op->getResult(0).getType().isSignlessInteger();
+    (op->getResult(0).getType().isa<IntegerType>());
 }
 
 void ConstantIntOp::build(Builder *builder, OperationState &result,
